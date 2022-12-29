@@ -56,7 +56,9 @@ fu! g:GoToPreviousFold()
 endfu
 
 fu! JourneyMode()
-  call DeactivateOtherModes('JourneyMode')
+  if exists('g:nyao_modes')
+    call DeactivateOtherModes('JourneyMode')
+  endif
   if !exists('g:journey_mode')
     let g:journey_mode = 1
     call add(g:nyao_modes, { -> g:journey_mode })
