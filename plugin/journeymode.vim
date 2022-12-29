@@ -70,7 +70,7 @@ fu! JourneyMode()
 
   if g:journey_mode | let g:nyao_active_mode = 'JourneyMode' | endif
 
-  let keys_to_map   = ['j', 'k', 'h', 'n', 'u', 'i', 'm', '<Tab>', 'o', 'p', 'r', 's', 'v', 'f', 'b', 'a', 's', 'v', ',', '.', 'q', 'e', 'd', 'c', 'dl', 'dk']
+  let keys_to_map   = ['j', 'k', 'h', 'n', 'u', 'm', '<Tab>', 'o', 'p', 'f', 'b', ',', 'q', 'c']
   let v_keys_to_map = ['h', 'n', '<Tab>']
 
   if g:journey_mode
