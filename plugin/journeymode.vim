@@ -113,6 +113,8 @@ fu! JourneyMode()
     vno n <C-d>
   else " exit journey mode
     let g:nyao_active_mode = ""
+    " this technique is insufficient for the appregio (key chord) plugin
+    " since key chords kinda hurt to type, I don't think I'll miss it
     for n in keys_to_map
       if has_key( g:jor_old_mappings, n )
             \ && type(g:jor_old_mappings[ n ]) == 1
