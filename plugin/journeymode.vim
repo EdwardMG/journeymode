@@ -74,8 +74,18 @@ fu! JourneyMode()
   let v_keys_to_map = ['h', 'n', '<Tab>']
 
   if g:journey_mode
-    for n in keys_to_map   | let g:jor_old_mappings[ n ]   = maparg( n, 'n') | endfor
-    for n in v_keys_to_map | let g:jor_old_v_mappings[ n ] = maparg( n, 'v') | endfor
+    for n in keys_to_map
+      let m = maplist()->filter({k, v -> v["mode"] == "n" && v["lhs"] == n && v["buffer"] == 0})
+      if len(m) > 0
+        let g:jor_old_mappings[ n ] = m[0]
+      endif
+    endfor
+    for n in v_keys_to_map
+      let m = maplist()->filter({k, v -> v["mode"] == "v" && v["lhs"] == n && v["buffer"] == 0})
+      if len(m) > 0
+        let g:jor_old_v_mappings[ n ] = m[0]
+      endif
+    endfor
 
     if &bg=="dark"
       hi StatusLine ctermbg=136 ctermfg=black
@@ -117,13 +127,14 @@ fu! JourneyMode()
     " since key chords kinda hurt to type, I don't think I'll miss it
     for n in keys_to_map
       if has_key( g:jor_old_mappings, n )
-            \ && type(g:jor_old_mappings[ n ]) == 1
-            \ && len(g:jor_old_mappings[ n ]) > 0
-        exe 'nno '.n.' '. g:jor_old_mappings[ n ]
+            \ && type(g:jor_old_mappings[ n ]) == 4
+            \ && len(g:jor_old_mappings[ n ]['rhs']) > 0
+        call mapset(g:jor_old_mappings[ n ])
+        unlet g:jor_old_mappings[ n ]
       else
         exe 'nno '.n.' '.n
       endif
-      if has_key( g:jor_old_mappings, n ) | unlet g:jor_old_mappings[ n ] | endif
+      " if has_key( g:jor_old_mappings, n ) | unlet g:jor_old_mappings[ n ] | endif
     endfor
 
     if exists('g:nyao_modes')
@@ -132,13 +143,14 @@ fu! JourneyMode()
 
     for n in v_keys_to_map
       if has_key( g:jor_old_v_mappings, n )
-            \ && type(g:jor_old_v_mappings[ n ]) == 1
-            \ && len(g:jor_old_v_mappings[ n ]) > 0
-        exe 'vno '.n.' '. g:jor_old_v_mappings[ n ]
+            \ && type(g:jor_old_v_mappings[ n ]) == 4
+            \ && len(g:jor_old_v_mappings[ n ]['rhs']) > 0
+        call mapset(g:jor_old_v_mappings[ n ])
+        unlet g:jor_old_v_mappings[ n ]
       else
         exe 'vno '.n.' '.n
       endif
-      if has_key( g:jor_old_v_mappings, n ) | unlet g:jor_old_v_mappings[ n ] | endif
+      " if has_key( g:jor_old_v_mappings, n ) | unlet g:jor_old_v_mappings[ n ] | endif
     endfor
   endif
 endfu
